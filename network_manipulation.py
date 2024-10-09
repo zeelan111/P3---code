@@ -12,9 +12,9 @@ class GRAPH_DATA:
         self.path = path
         self.paper = nx.read_gml(self.path + name_paper +'.gml')
         #self.paper = nx.petersen_graph()
-        print('paper loaded with', self.paper.number_of_nodes(), 'nodes and', self.paper.number_of_edges(), 'edges.')
+        print('paper loaded with', self.paper.number_of_nodes(), 'nodes and', self.paper.number_of_edges(), 'edges.', "it is a", type(self.paper))
         self.author = nx.read_gml(self.path + name_author +'.gml')
-        print('author loaded with', self.author.number_of_nodes(), 'nodes and', self.author.number_of_edges(), 'edges.')
+        print('author loaded with', self.author.number_of_nodes(), 'nodes and', self.author.number_of_edges(), 'edges.', "it is a", type(self.author))
         #print(type(self.author))
         
 
@@ -51,14 +51,11 @@ class GRAPH_DATA:
 
         
 
-        nodes_g1 = set(self.paper.nodes())
-        nodes_g2 = set(self.author.nodes())
+        nodes_g1 = set(self.paper.nodes()) # all nodes in paper
+        nodes_to_remove = set(self.author.nodes()) # all nodes in author
 
         # Find the intersection of the two node sets
-        common_nodes = nodes_g1.intersection(nodes_g2)
-
-        nodes_to_remove = set(self.author.nodes()) # all nodes from author
-        
+        common_nodes = nodes_g1.intersection(nodes_to_remove)
         
         neighbors_to_add = set() # holding nighbors of the nodes
 
