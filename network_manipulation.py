@@ -15,30 +15,25 @@ class GRAPH_DATA:
         print('paper loaded with', self.paper.number_of_nodes(), 'nodes and', self.paper.number_of_edges(), 'edges.', "it is a", type(self.paper))
         self.author = nx.read_gml(self.path + name_author +'.gml')
         print('author loaded with', self.author.number_of_nodes(), 'nodes and', self.author.number_of_edges(), 'edges.', "it is a", type(self.author))
-        #print(type(self.author))
+        
         
 
     def create_smaller_sample(self, node_amount:int, save = False, paper_name = 'paper_sample', author_name = 'author_sample'):
         print('creating a smaller dataset')
-        nodes_to_remove = [] # verible for the nodes to remove
         
-        while self.paper.number_of_nodes() > node_amount:
+        # Sort nodes by degree in ascending order
+        nodes_by_degree = sorted(self.paper.degree, key=lambda x: x[1])
             
-            # for loop adds nodes with 0 edges to nodes to remove 
-            for node in self.paper.nodes():
-                if self.paper.degree(node) == 0:  # If node have 0 edges
-                    nodes_to_remove.append(node)
+        # Nodes to remove
+        nodes_to_remove = [node for node, degree in nodes_by_degree[:self.paper.number_of_nodes() - node_amount]]
             
-            if len(nodes_to_remove) > 0: # if there are any nodes in nodes to remove
-                self.paper.remove_nodes_from(nodes_to_remove) # removes nodes
-                nodes_to_remove = []
-                
+        # Remove those nodes
+        self.paper.remove_nodes_from(nodes_to_remove)
+
             
-            # removes 5% of nodes from the data choosen randomly
-            self.paper.remove_nodes_from(random.sample(list(self.paper.nodes()), int(self.paper.number_of_nodes() * 0.05)))
-                
+               
         
-   
+        # remove any nodes with 0 edges
         for node in self.paper.nodes():
             if self.paper.degree(node) == 0:
                 nodes_to_remove.append(node)
@@ -91,7 +86,8 @@ class GRAPH_DATA:
        plt.show()
 
 
-G = GRAPH_DATA(path, 'paper_sample', 'author_sample')
-#G.create_smaller_sample(100000, save=True)
-#G.show_graph(G.paper)
+#G = GRAPH_DATA(path, 'paper_2', 'author_2')
+#G.create_smaller_sample(300 , save=True, paper_name="paper_draw", author_name="author_draw")
+g = GRAPH_DATA(path, 'paper_draw', 'author_draw')
+g.show_graph(g.paper)
 
