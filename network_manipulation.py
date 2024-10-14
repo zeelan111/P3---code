@@ -31,12 +31,19 @@ class GRAPH_DATA:
         self.paper.remove_nodes_from(nodes_to_remove)
 
             
-               
-        
+        # remove edges to same node
+        for node in self.paper.nodes():
+            neighbors = list(self.paper.neighbors(node))
+            if node in neighbors:
+                self.paper.remove_edge(node, node)
+
+
+
         # remove any nodes with 0 edges
         for node in self.paper.nodes():
             if self.paper.degree(node) == 0:
                 nodes_to_remove.append(node)
+            
         
         if len(nodes_to_remove) > 0:
             self.paper.remove_nodes_from(nodes_to_remove)
@@ -71,6 +78,11 @@ class GRAPH_DATA:
         
         self.author.remove_nodes_from(nodes_to_remove)
 
+        # remove edges to same node
+        for node in self.author.nodes():
+            neighbors = list(self.author.neighbors(node))
+            if node in neighbors:
+                self.author.remove_edge(node, node)
         
         print('author graph now with', self.author.number_of_nodes(), 'nodes and', self.author.number_of_edges(), 'edges.')
         
@@ -89,5 +101,10 @@ class GRAPH_DATA:
 #G = GRAPH_DATA(path, 'paper_2', 'author_2')
 #G.create_smaller_sample(300 , save=True, paper_name="paper_draw", author_name="author_draw")
 g = GRAPH_DATA(path, 'paper_draw', 'author_draw')
+g.create_smaller_sample(g.paper.number_of_nodes() , save=False, paper_name="paper_draw", author_name="author_draw")
 g.show_graph(g.paper)
+
+#neighbors = list(g.paper.neighbors("W2148143831"))
+
+#print(f"Neighbors of w2148143831: {neighbors}")
 
