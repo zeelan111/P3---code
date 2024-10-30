@@ -30,15 +30,25 @@ class GRAPH_DATA:
         itteration = 1000
         while self.paper.number_of_nodes() > node_amount and itteration > 0:
             node = random.choice(list(self.paper.nodes))
-            paper_temp = self.paper
-            paper_temp.remove_node(node)
+            #paper_temp = self.paper.copy()
+            #paper_temp.remove_node(node)
+            neighbors = list(self.paper.successors(node))  # Outgoing neighbors
+            predecessors = list(self.paper.predecessors(node))  # Incoming neighbors
+            connected = nx.is_weakly_connected(self.paper)
             
-            connected = nx.is_weakly_connected(paper_temp)
-            #connected = False
             if not connected:
                 itteration -= 1
+                self.paper.add_node(node)
+                # Re-add outgoing edges
+                for neighbor in neighbors:
+                    self.paper.add_edge(node, neighbor)
+
+                # Re-add incoming edges
+                for predecessor in predecessors:
+                    self.paper.add_edge(predecessor, node)
+            
             elif connected:
-                self.paper.remove_node(node)
+                itteration = 1000
 
 
         """# Sort nodes by degree in ascending order
@@ -114,11 +124,11 @@ class GRAPH_DATA:
        plt.show()
 
 
-#G = GRAPH_DATA(path, 'paper_2', 'author_2')
-#G.create_smaller_sample(300 , save=True, paper_name="paper_draw", author_name="author_draw")
-g = GRAPH_DATA(path, 'paper_draw')
-g.create_smaller_sample(100, save=False, paper_name="paper_draw")
-#g.show_graph(g.paper)
+G = GRAPH_DATA(path, 'paper2paper_2000_gcc',)
+G.create_smaller_sample(100000 , save=True, paper_name="paper_new",)
+#g = GRAPH_DATA(path, 'paper_draw')
+#g.create_smaller_sample(100, save=False, paper_name="paper_draw")
+#g.show_graph()
 
 #neighbors = list(g.paper.neighbors("W2148143831"))
 
