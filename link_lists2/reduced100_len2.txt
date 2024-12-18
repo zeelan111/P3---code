@@ -1,0 +1,6 @@
+Evaluation Metrics
+==================
+ROC-AUC Score: 0.9871
+Average Precision (AP): 0.9894
+Reconstruction Loss (MSE): 0.5163
+Execution Time: 7.49 seconds
